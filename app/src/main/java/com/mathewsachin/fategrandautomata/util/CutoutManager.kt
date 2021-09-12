@@ -3,7 +3,6 @@ package com.mathewsachin.fategrandautomata.util
 import android.app.Activity
 import android.os.Build
 import android.util.DisplayMetrics
-import android.view.Surface
 import android.view.WindowManager
 import com.mathewsachin.fategrandautomata.scripts.prefs.IPreferences
 import com.mathewsachin.fategrandautomata.scripts.prefs.isNewUI
@@ -12,6 +11,7 @@ import timber.log.Timber
 import timber.log.debug
 import javax.inject.Inject
 import javax.inject.Singleton
+import android.view.Surface as Surface1
 
 @Singleton
 class CutoutManager @Inject constructor(
@@ -60,9 +60,9 @@ class CutoutManager @Inject constructor(
             // Store the cutout for Portrait orientation of device
             val (l, t, r, b) = cutout
             cutoutValue = when (rotation) {
-                Surface.ROTATION_90 -> Cutout(b, l, t, r)
-                Surface.ROTATION_180 -> Cutout(r, b, l, t)
-                Surface.ROTATION_270 -> Cutout(t, r, b, l)
+                Surface1.ROTATION_90 -> Cutout(b, l, t, r)
+                Surface1.ROTATION_180 -> Cutout(r, b, l, t)
+                Surface1.ROTATION_270 -> Cutout(t, r, b, l)
                 else -> cutout
             }
         }
@@ -83,9 +83,9 @@ class CutoutManager @Inject constructor(
 
         // Consider current orientation of screen
         return when (Rotation) {
-            Surface.ROTATION_90 -> Cutout(t, r, b, l)
-            Surface.ROTATION_180 -> Cutout(r, b, l, t)
-            Surface.ROTATION_270 -> Cutout(b, l, t, r)
+            Surface1.ROTATION_90 -> Cutout(t, r, b, l)
+            Surface1.ROTATION_180 -> Cutout(r, b, l, t)
+            Surface1.ROTATION_270 -> Cutout(b, l, t, r)
             else -> cutoutValue
         }
     }
@@ -104,6 +104,9 @@ class CutoutManager @Inject constructor(
         w -= l + r
         h -= t + b
 
-        return Region(l, t, w, h)
+        val fgo_ratio = 0.90
+        val bar_ratio = 0.025
+
+        return Region((w * bar_ratio).toInt(), t, (w * fgo_ratio).toInt(), h)
     }
 }
